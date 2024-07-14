@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, effect, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {AsyncPipe} from '@angular/common';
 import {MatIcon, MatIconModule} from '@angular/material/icon';
@@ -12,8 +12,7 @@ import {
 } from '@angular/material/sidenav';
 import {MatToolbar, MatToolbarModule} from '@angular/material/toolbar';
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
-import {Observable} from "rxjs";
-import {map, shareReplay} from "rxjs/operators";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-root',
@@ -42,12 +41,14 @@ import {map, shareReplay} from "rxjs/operators";
 export class AppComponent {
   title = 'angular-signal-based-ui';
 
-  private breakpointObserver = inject(BreakpointObserver);
+  private breakpointSignal = toSignal(inject(BreakpointObserver)
+    .observe(Breakpoints.Handset));
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay(),
-    );
+  isHandset = computed(() => {
+    return this.breakpointSignal()?.matches ?? false;
+  })
+
+  handsetLogger = effect(() => {
+    console.log(`isHandset changed to ${this.isHandset()}`)
+  })
 }
