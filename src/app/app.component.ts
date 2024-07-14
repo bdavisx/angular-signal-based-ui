@@ -48,7 +48,9 @@ export class AppComponent {
     return this.breakpointSignal()?.matches ?? false;
   })
 
-  handsetLogger = effect(() => {
-    console.log(`isHandset changed to ${this.isHandset()}`)
-  })
+  constructor() {
+    effect(() => {
+      console.log(`isHandset changed to ${this.isHandset()}`)
+    })
+  }
 }
