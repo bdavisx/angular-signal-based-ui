@@ -1,0 +1,9 @@
+<button (click)="updateQueueCount()">Update Count</button>
+
+<div *ngIf="loading()">
+  <p>Loading...</p>
+</div>
+
+<div *ngIf="!loading() && queueCount()">
+  <p>Queue Count: {{ queueCount() }}</p>
+</div>

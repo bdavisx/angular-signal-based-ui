@@ -19,7 +19,6 @@ import {toSignal} from "@angular/core/rxjs-interop";
   standalone: true,
   imports: [
     RouterOutlet,
-    AsyncPipe,
     MatIcon,
     MatIconButton,
     MatListItem,
